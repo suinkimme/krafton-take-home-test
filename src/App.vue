@@ -51,7 +51,7 @@ const handlePriorityChange = (value: string) => {
       <ListRowTexts
         top="할 일 1"
         middle="할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용"
-        bottom="2025년 10월 28일 오후 10시 00분"
+        bottom="2025년 10월 28일"
       />
     </template>
     <template #right>
