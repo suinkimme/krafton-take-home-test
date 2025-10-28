@@ -3,12 +3,14 @@ import ListHeader from './components/ListHeader.vue'
 import ListRow from './components/ListRow.vue'
 import ListRowTexts from './components/ListRowTexts.vue'
 import Button from './components/Button.vue'
+import Badge from './components/Badge.vue'
 </script>
 
 <template>
   <ListHeader title="할 일 목록" />
   <ListRow withPadding>
     <template #contents>
+      <Badge status="warning" size="small">높음</Badge>
       <ListRowTexts
         top="할 일 1"
         middle="할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용"
