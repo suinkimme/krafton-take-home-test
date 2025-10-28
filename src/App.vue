@@ -55,10 +55,46 @@ const todos = ref([
 ])
 
 const editingStates = ref(new Map<number, boolean>())
+const editingTodos = ref(
+  new Map<
+    number,
+    { id: number; title: string; description: string; date: string; priority: Priority }
+  >(),
+)
 
 const toggleEdit = (id: number) => {
   const currentState = editingStates.value.get(id) || false
+  if (!currentState) {
+    // 편집 모드 시작 - 현재 todo 데이터를 임시 저장
+    const todo = todos.value.find((t) => t.id === id)
+    if (todo) {
+      editingTodos.value.set(id, { ...todo, priority: todo.priority as Priority })
+    }
+  } else {
+    // 편집 모드 종료 - 임시 데이터 삭제
+    editingTodos.value.delete(id)
+  }
   editingStates.value.set(id, !currentState)
+}
+
+const saveTodo = (id: number) => {
+  const editingTodo = editingTodos.value.get(id)
+  if (editingTodo) {
+    // todos 배열에서 해당 todo 찾아서 업데이트
+    const index = todos.value.findIndex((t) => t.id === id)
+    if (index !== -1) {
+      todos.value[index] = { ...editingTodo }
+    }
+    // 편집 모드 종료
+    editingStates.value.set(id, false)
+    editingTodos.value.delete(id)
+  }
+}
+
+const cancelEdit = (id: number) => {
+  // 편집 모드 종료 (변경사항 저장하지 않음)
+  editingStates.value.set(id, false)
+  editingTodos.value.delete(id)
 }
 
 const priority = ref<Priority>('medium')
@@ -104,9 +140,7 @@ const handlePriorityChange = (value: Priority) => {
       </template>
       <template #right>
         <div style="display: flex; gap: 3px">
-          <Button size="small" @click="toggleEdit(todo.id)">
-            {{ editingStates.get(todo.id) ? '저장' : '수정' }}
-          </Button>
+          <Button size="small" @click="toggleEdit(todo.id)"> 수정 </Button>
           <Button theme="dark" size="small">삭제</Button>
         </div>
       </template>
@@ -115,8 +149,15 @@ const handlePriorityChange = (value: Priority) => {
     <Card v-else style="margin: 16px 0">
       <template #header>
         <Tab
-          :model-value="todo.priority as Priority"
-          @update:model-value="(value: string) => handlePriorityChange(value as Priority)"
+          :model-value="editingTodos.get(todo.id)?.priority as Priority"
+          @update:model-value="
+            (value: string) => {
+              const editingTodo = editingTodos.get(todo.id)
+              if (editingTodo) {
+                editingTodo.priority = value as Priority
+              }
+            }
+          "
         >
           <TabItem value="high">높음</TabItem>
           <TabItem value="medium">보통</TabItem>
@@ -124,14 +165,48 @@ const handlePriorityChange = (value: Priority) => {
         </Tab>
       </template>
       <template #content>
-        <Input type="text" v-model="todo.title" placeholder="할 일을 입력하세요" />
-        <Textarea v-model="todo.description" placeholder="할 일 내용을 입력하세요" />
-        <Input type="date" v-model="todo.date" />
+        <Input
+          type="text"
+          :model-value="editingTodos.get(todo.id)?.title"
+          @update:model-value="
+            (value: string) => {
+              const editingTodo = editingTodos.get(todo.id)
+              if (editingTodo) {
+                editingTodo.title = value
+              }
+            }
+          "
+          placeholder="할 일을 입력하세요"
+        />
+        <Textarea
+          :model-value="editingTodos.get(todo.id)?.description"
+          @update:model-value="
+            (value: string) => {
+              const editingTodo = editingTodos.get(todo.id)
+              if (editingTodo) {
+                editingTodo.description = value
+              }
+            }
+          "
+          placeholder="할 일 내용을 입력하세요"
+        />
+        <Input
+          type="date"
+          :model-value="editingTodos.get(todo.id)?.date"
+          @update:model-value="
+            (value: string) => {
+              const editingTodo = editingTodos.get(todo.id)
+              if (editingTodo) {
+                editingTodo.date = value
+              }
+            }
+          "
+        />
       </template>
       <template #footer>
         <div style="display: flex; gap: 8px">
-          <Button>저장</Button>
-          <Button theme="dark" @click="toggleEdit(todo.id)">취소</Button>
+          <Button @click="saveTodo(todo.id)">저장</Button>
+          <Button theme="dark" @click="cancelEdit(todo.id)">취소</Button>
         </div>
       </template>
     </Card>
