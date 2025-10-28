@@ -135,13 +135,6 @@ Vue(Composition API)를 기반으로 구현하며, LocalStorage를 활용해 데
 │ │ ├── TheWelcome.vue
 │ │ └── WelcomeItem.vue
 │ │
-│ ├── router/ # Vue Router 설정 폴더
-│ │ └── index.ts (예상)
-│ │
-│ ├── views/ # 라우트별 페이지 컴포넌트
-│ │ ├── AboutView.vue
-│ │ └── HomeView.vue
-│ │
 │ ├── App.vue # 최상위 루트 컴포넌트
 │ └── main.ts # 애플리케이션 진입점
 │
@@ -168,8 +161,6 @@ Vue(Composition API)를 기반으로 구현하며, LocalStorage를 활용해 데
 | --------------------- | -------------------------------------------------------- |
 | **src/assets/**       | CSS, 이미지 등 정적 리소스 관리                          |
 | **src/components/**   | 재사용 가능한 Vue 컴포넌트                               |
-| **src/views/**        | 페이지 단위 컴포넌트 (라우트 연결 대상)                  |
-| **src/router/**       | Vue Router 설정 파일                                     |
 | **App.vue / main.ts** | 애플리케이션 진입점 및 루트 컴포넌트                     |
 | **tests**             | 컴포넌트별 단위 테스트 (Vitest 사용)                     |
 | **config files**      | ESLint, Prettier, TypeScript, Vite 등 프로젝트 설정 파일 |
@@ -177,4 +168,3 @@ Vue(Composition API)를 기반으로 구현하며, LocalStorage를 활용해 데
 # rules
 
 - 모든 새로운 컴포넌트는 특별히 명시되지 않는 한 /src/components에 생성되어야 하며 파일명은 파스칼 케이스 규칙을 따른다.
-- 모든 새로운 페이지는 /src/views에 생성되어야 하며 ExampleView.vue와 같은 이름을 지어야 한다.
