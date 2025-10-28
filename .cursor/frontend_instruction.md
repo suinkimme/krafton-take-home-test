@@ -68,7 +68,7 @@ Vue(Composition API)를 기반으로 구현하며, LocalStorage를 활용해 데
   사용자는 각 TODO에 마감일을 설정할 수 있습니다.
 - **기능 상세:**
   - 오늘 이전 날짜는 선택 불가
-  - 입력 형식 검증 (YYYY-MM-DD)
+  - 입력 형식 검증 (YYYY년 MM월 DD일)
   - 마감일 지난 TODO는 “지연 상태”로 표시
 - **사용 기술:** Vue computed 속성, dayjs 또는 date-fns 활용
 
