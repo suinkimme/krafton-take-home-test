@@ -63,5 +63,3 @@ const handlePriorityChange = (value: string) => {
   </ListRow>
   <Border />
 </template>
-
-<style scoped></style>
