@@ -108,10 +108,34 @@ const deleteTodo = (id: number) => {
   editingTodos.value.delete(id)
 }
 
-const priority = ref<Priority>('medium')
+// 새 todo 등록을 위한 폼 데이터
+const newTodo = ref({
+  title: '',
+  description: '',
+  date: '',
+  priority: 'medium' as Priority,
+})
 
-const handlePriorityChange = (value: Priority) => {
-  priority.value = value
+// 새 todo 등록 함수
+const addTodo = () => {
+  if (newTodo.value.title.trim() && newTodo.value.description.trim() && newTodo.value.date) {
+    const id = Math.max(...todos.value.map((t) => t.id), 0) + 1
+    todos.value.push({
+      id,
+      title: newTodo.value.title.trim(),
+      description: newTodo.value.description.trim(),
+      date: newTodo.value.date,
+      priority: newTodo.value.priority,
+    })
+
+    // 폼 초기화
+    newTodo.value = {
+      title: '',
+      description: '',
+      date: '',
+      priority: 'medium',
+    }
+  }
 }
 </script>
 
@@ -120,8 +144,8 @@ const handlePriorityChange = (value: Priority) => {
   <Card>
     <template #header>
       <Tab
-        :model-value="priority"
-        @update:model-value="(value: string) => handlePriorityChange(value as Priority)"
+        :model-value="newTodo.priority"
+        @update:model-value="(value: string) => (newTodo.priority = value as Priority)"
       >
         <TabItem value="high">높음</TabItem>
         <TabItem value="medium">보통</TabItem>
@@ -129,100 +153,102 @@ const handlePriorityChange = (value: Priority) => {
       </Tab>
     </template>
     <template #content>
-      <Input type="text" placeholder="할 일을 입력하세요" />
-      <Textarea placeholder="할 일 내용을 입력하세요" />
-      <Input type="date" />
+      <Input type="text" v-model="newTodo.title" placeholder="할 일을 입력하세요" />
+      <Textarea v-model="newTodo.description" placeholder="할 일 내용을 입력하세요" />
+      <Input type="date" v-model="newTodo.date" />
     </template>
     <template #footer>
-      <Button>등록</Button>
+      <Button @click="addTodo">등록</Button>
     </template>
   </Card>
 
   <Spacing :size="30" />
 
-  <div v-for="(todo, index) in todos" :key="index" v-if="todos.length > 0">
-    <ListRow withPadding v-if="!editingStates.get(todo.id)">
-      <template #contents>
-        <Badge :status="getPriorityBadgeStatus(todo.priority as Priority)" size="small">{{
-          getPriorityLabel(todo.priority as Priority)
-        }}</Badge>
-        <Spacing :size="10" />
-        <ListRowTexts :top="todo.title" :middle="todo.description" :bottom="todo.date" />
-      </template>
-      <template #right>
-        <div style="display: flex; gap: 3px">
-          <Button size="small" @click="toggleEdit(todo.id)"> 수정 </Button>
-          <Button theme="dark" size="small" @click="deleteTodo(todo.id)">삭제</Button>
-        </div>
-      </template>
-    </ListRow>
+  <div v-if="todos.length > 0">
+    <div v-for="(todo, index) in todos" :key="index">
+      <ListRow withPadding v-if="!editingStates.get(todo.id)">
+        <template #contents>
+          <Badge :status="getPriorityBadgeStatus(todo.priority as Priority)" size="small">{{
+            getPriorityLabel(todo.priority as Priority)
+          }}</Badge>
+          <Spacing :size="10" />
+          <ListRowTexts :top="todo.title" :middle="todo.description" :bottom="todo.date" />
+        </template>
+        <template #right>
+          <div style="display: flex; gap: 3px">
+            <Button size="small" @click="toggleEdit(todo.id)"> 수정 </Button>
+            <Button theme="dark" size="small" @click="deleteTodo(todo.id)">삭제</Button>
+          </div>
+        </template>
+      </ListRow>
 
-    <Card v-else style="margin: 16px 0">
-      <template #header>
-        <Tab
-          :model-value="editingTodos.get(todo.id)?.priority as Priority"
-          @update:model-value="
-            (value: string) => {
-              const editingTodo = editingTodos.get(todo.id)
-              if (editingTodo) {
-                editingTodo.priority = value as Priority
+      <Card v-else style="margin: 16px 0">
+        <template #header>
+          <Tab
+            :model-value="editingTodos.get(todo.id)?.priority as Priority"
+            @update:model-value="
+              (value: string) => {
+                const editingTodo = editingTodos.get(todo.id)
+                if (editingTodo) {
+                  editingTodo.priority = value as Priority
+                }
               }
-            }
-          "
-        >
-          <TabItem value="high">높음</TabItem>
-          <TabItem value="medium">보통</TabItem>
-          <TabItem value="low">낮음</TabItem>
-        </Tab>
-      </template>
-      <template #content>
-        <Input
-          type="text"
-          :model-value="editingTodos.get(todo.id)?.title"
-          @update:model-value="
-            (value: string) => {
-              const editingTodo = editingTodos.get(todo.id)
-              if (editingTodo) {
-                editingTodo.title = value
+            "
+          >
+            <TabItem value="high">높음</TabItem>
+            <TabItem value="medium">보통</TabItem>
+            <TabItem value="low">낮음</TabItem>
+          </Tab>
+        </template>
+        <template #content>
+          <Input
+            type="text"
+            :model-value="editingTodos.get(todo.id)?.title"
+            @update:model-value="
+              (value: string) => {
+                const editingTodo = editingTodos.get(todo.id)
+                if (editingTodo) {
+                  editingTodo.title = value
+                }
               }
-            }
-          "
-          placeholder="할 일을 입력하세요"
-        />
-        <Textarea
-          :model-value="editingTodos.get(todo.id)?.description"
-          @update:model-value="
-            (value: string) => {
-              const editingTodo = editingTodos.get(todo.id)
-              if (editingTodo) {
-                editingTodo.description = value
+            "
+            placeholder="할 일을 입력하세요"
+          />
+          <Textarea
+            :model-value="editingTodos.get(todo.id)?.description"
+            @update:model-value="
+              (value: string) => {
+                const editingTodo = editingTodos.get(todo.id)
+                if (editingTodo) {
+                  editingTodo.description = value
+                }
               }
-            }
-          "
-          placeholder="할 일 내용을 입력하세요"
-        />
-        <Input
-          type="date"
-          :model-value="editingTodos.get(todo.id)?.date"
-          @update:model-value="
-            (value: string) => {
-              const editingTodo = editingTodos.get(todo.id)
-              if (editingTodo) {
-                editingTodo.date = value
+            "
+            placeholder="할 일 내용을 입력하세요"
+          />
+          <Input
+            type="date"
+            :model-value="editingTodos.get(todo.id)?.date"
+            @update:model-value="
+              (value: string) => {
+                const editingTodo = editingTodos.get(todo.id)
+                if (editingTodo) {
+                  editingTodo.date = value
+                }
               }
-            }
-          "
-        />
-      </template>
-      <template #footer>
-        <div style="display: flex; gap: 8px">
-          <Button @click="saveTodo(todo.id)">저장</Button>
-          <Button theme="dark" @click="cancelEdit(todo.id)">취소</Button>
-        </div>
-      </template>
-    </Card>
+            "
+          />
+        </template>
+        <template #footer>
+          <div style="display: flex; gap: 8px">
+            <Button @click="saveTodo(todo.id)">저장</Button>
+            <Button theme="dark" @click="cancelEdit(todo.id)">취소</Button>
+          </div>
+        </template>
+      </Card>
 
-    <Border v-if="index !== todos.length - 1" />
+      <Border v-if="index !== todos.length - 1" />
+    </div>
   </div>
   <div v-else>
     <p>할 일이 없습니다.</p>
