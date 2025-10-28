@@ -17,3 +17,13 @@ export const getPriorityLabel = (priority: Priority): string => {
   }
   return priorityMap[priority]
 }
+
+// Priority에 따른 Badge status 변환 함수
+export const getPriorityBadgeStatus = (priority: Priority): 'error' | 'warning' | 'info' => {
+  const statusMap: Record<Priority, 'error' | 'warning' | 'info'> = {
+    [PRIORITY.HIGH]: 'error',
+    [PRIORITY.MEDIUM]: 'warning',
+    [PRIORITY.LOW]: 'info',
+  }
+  return statusMap[priority]
+}

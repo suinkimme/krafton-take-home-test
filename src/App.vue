@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getPriorityLabel } from './lib/Todo'
+import { getPriorityLabel, getPriorityBadgeStatus } from './lib/Todo'
 
 // components
 import ListHeader from './components/ListHeader.vue'
@@ -85,7 +85,9 @@ const handlePriorityChange = (value: string) => {
   <div v-for="(todo, index) in todos" :key="index">
     <ListRow withPadding>
       <template #contents>
-        <Badge status="warning" size="small">{{ getPriorityLabel(todo.priority) }}</Badge>
+        <Badge :status="getPriorityBadgeStatus(todo.priority)" size="small">{{
+          getPriorityLabel(todo.priority)
+        }}</Badge>
         <Spacing :size="10" />
         <ListRowTexts :top="todo.title" :middle="todo.description" :bottom="todo.date" />
       </template>
