@@ -277,7 +277,10 @@ const toggleComplete = (id: number) => {
       <ListRow
         withPadding
         v-if="!editingStates.get(todo.id)"
-        :style="{ textDecoration: todo.completed ? 'line-through' : 'none' }"
+        :style="{
+          textDecoration: todo.completed ? 'line-through' : 'none',
+          opacity: todo.completed ? 0.6 : 1,
+        }"
         @click="toggleComplete(todo.id)"
       >
         <template #contents>
