@@ -17,40 +17,141 @@ import Input from './components/Input.vue'
 import Textarea from './components/Textarea.vue'
 
 const todos = ref([
-  { id: 1, title: '할 일 1', description: '할 일 1 내용', date: '2025-10-28', priority: 'high' },
-  { id: 2, title: '할 일 2', description: '할 일 2 내용', date: '2025-10-29', priority: 'medium' },
-  { id: 3, title: '할 일 3', description: '할 일 3 내용', date: '2025-10-30', priority: 'low' },
-  { id: 4, title: '할 일 4', description: '할 일 4 내용', date: '2025-10-31', priority: 'high' },
-  { id: 5, title: '할 일 5', description: '할 일 5 내용', date: '2025-11-01', priority: 'medium' },
-  { id: 6, title: '할 일 6', description: '할 일 6 내용', date: '2025-11-02', priority: 'low' },
-  { id: 7, title: '할 일 7', description: '할 일 7 내용', date: '2025-11-03', priority: 'high' },
-  { id: 8, title: '할 일 8', description: '할 일 8 내용', date: '2025-11-04', priority: 'medium' },
-  { id: 9, title: '할 일 9', description: '할 일 9 내용', date: '2025-11-05', priority: 'low' },
-  { id: 10, title: '할 일 10', description: '할 일 10 내용', date: '2025-11-06', priority: 'high' },
+  {
+    id: 1,
+    title: '할 일 1',
+    description: '할 일 1 내용',
+    date: '2025-10-28',
+    priority: 'high',
+    completed: false,
+  },
+  {
+    id: 2,
+    title: '할 일 2',
+    description: '할 일 2 내용',
+    date: '2025-10-29',
+    priority: 'medium',
+    completed: false,
+  },
+  {
+    id: 3,
+    title: '할 일 3',
+    description: '할 일 3 내용',
+    date: '2025-10-30',
+    priority: 'low',
+    completed: false,
+  },
+  {
+    id: 4,
+    title: '할 일 4',
+    description: '할 일 4 내용',
+    date: '2025-10-31',
+    priority: 'high',
+    completed: false,
+  },
+  {
+    id: 5,
+    title: '할 일 5',
+    description: '할 일 5 내용',
+    date: '2025-11-01',
+    priority: 'medium',
+    completed: false,
+  },
+  {
+    id: 6,
+    title: '할 일 6',
+    description: '할 일 6 내용',
+    date: '2025-11-02',
+    priority: 'low',
+    completed: false,
+  },
+  {
+    id: 7,
+    title: '할 일 7',
+    description: '할 일 7 내용',
+    date: '2025-11-03',
+    priority: 'high',
+    completed: false,
+  },
+  {
+    id: 8,
+    title: '할 일 8',
+    description: '할 일 8 내용',
+    date: '2025-11-04',
+    priority: 'medium',
+    completed: false,
+  },
+  {
+    id: 9,
+    title: '할 일 9',
+    description: '할 일 9 내용',
+    date: '2025-11-05',
+    priority: 'low',
+    completed: false,
+  },
+  {
+    id: 10,
+    title: '할 일 10',
+    description: '할 일 10 내용',
+    date: '2025-11-06',
+    priority: 'high',
+    completed: false,
+  },
   {
     id: 11,
     title: '할 일 11',
     description: '할 일 11 내용',
     date: '2025-11-07',
     priority: 'medium',
+    completed: false,
   },
-  { id: 12, title: '할 일 12', description: '할 일 12 내용', date: '2025-11-08', priority: 'low' },
-  { id: 13, title: '할 일 13', description: '할 일 13 내용', date: '2025-11-09', priority: 'high' },
+  {
+    id: 12,
+    title: '할 일 12',
+    description: '할 일 12 내용',
+    date: '2025-11-08',
+    priority: 'low',
+    completed: false,
+  },
+  {
+    id: 13,
+    title: '할 일 13',
+    description: '할 일 13 내용',
+    date: '2025-11-09',
+    priority: 'high',
+    completed: false,
+  },
   {
     id: 14,
     title: '할 일 14',
     description: '할 일 14 내용',
     date: '2025-11-10',
     priority: 'medium',
+    completed: false,
   },
-  { id: 15, title: '할 일 15', description: '할 일 15 내용', date: '2025-11-11', priority: 'low' },
-  { id: 16, title: '할 일 16', description: '할 일 16 내용', date: '2025-11-12', priority: 'high' },
+  {
+    id: 15,
+    title: '할 일 15',
+    description: '할 일 15 내용',
+    date: '2025-11-11',
+    priority: 'low',
+    completed: false,
+  },
+  {
+    id: 16,
+    title: '할 일 16',
+    description: '할 일 16 내용',
+    date: '2025-11-12',
+    priority: 'high',
+    completed: false,
+  },
   {
     id: 17,
     title: '할 일 17',
     description: '할 일 17 내용',
     date: '2025-11-13',
     priority: 'medium',
+    completed: false,
   },
 ])
 
@@ -137,6 +238,13 @@ const addTodo = () => {
     }
   }
 }
+
+const toggleComplete = (id: number) => {
+  const todo = todos.value.find((t) => t.id === id)
+  if (todo) {
+    todo.completed = !todo.completed
+  }
+}
 </script>
 
 <template>
@@ -166,7 +274,12 @@ const addTodo = () => {
 
   <div v-if="todos.length > 0">
     <div v-for="(todo, index) in todos" :key="index">
-      <ListRow withPadding v-if="!editingStates.get(todo.id)">
+      <ListRow
+        withPadding
+        v-if="!editingStates.get(todo.id)"
+        :style="{ textDecoration: todo.completed ? 'line-through' : 'none' }"
+        @click="toggleComplete(todo.id)"
+      >
         <template #contents>
           <Badge :status="getPriorityBadgeStatus(todo.priority as Priority)" size="small">{{
             getPriorityLabel(todo.priority as Priority)
