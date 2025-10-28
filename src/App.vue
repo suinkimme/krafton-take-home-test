@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getPriorityLabel, getPriorityBadgeStatus } from './lib/Todo'
+import { getPriorityLabel, getPriorityBadgeStatus, type Priority } from './lib/Todo'
 
 // components
 import ListHeader from './components/ListHeader.vue'
@@ -55,7 +55,7 @@ const todos = ref([
 ])
 const priority = ref('medium')
 
-const handlePriorityChange = (value: string) => {
+const handlePriorityChange = (value: Priority) => {
   priority.value = value
 }
 </script>
