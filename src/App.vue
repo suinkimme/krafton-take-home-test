@@ -53,7 +53,15 @@ const todos = ref([
     priority: 'medium',
   },
 ])
-const priority = ref('medium')
+
+const editingStates = ref(new Map<number, boolean>())
+
+const toggleEdit = (id: number) => {
+  const currentState = editingStates.value.get(id) || false
+  editingStates.value.set(id, !currentState)
+}
+
+const priority = ref<Priority>('medium')
 
 const handlePriorityChange = (value: Priority) => {
   priority.value = value
@@ -64,7 +72,10 @@ const handlePriorityChange = (value: Priority) => {
   <ListHeader title="할 일 목록" />
   <Card>
     <template #header>
-      <Tab :model-value="priority" @update:model-value="handlePriorityChange">
+      <Tab
+        :model-value="priority"
+        @update:model-value="(value: string) => handlePriorityChange(value as Priority)"
+      >
         <TabItem value="high">높음</TabItem>
         <TabItem value="medium">보통</TabItem>
         <TabItem value="low">낮음</TabItem>
@@ -83,21 +94,48 @@ const handlePriorityChange = (value: Priority) => {
   <Spacing :size="30" />
 
   <div v-for="(todo, index) in todos" :key="index">
-    <ListRow withPadding>
+    <ListRow withPadding v-if="!editingStates.get(todo.id)">
       <template #contents>
-        <Badge :status="getPriorityBadgeStatus(todo.priority)" size="small">{{
-          getPriorityLabel(todo.priority)
+        <Badge :status="getPriorityBadgeStatus(todo.priority as Priority)" size="small">{{
+          getPriorityLabel(todo.priority as Priority)
         }}</Badge>
         <Spacing :size="10" />
         <ListRowTexts :top="todo.title" :middle="todo.description" :bottom="todo.date" />
       </template>
       <template #right>
         <div style="display: flex; gap: 3px">
-          <Button size="small">수정</Button>
+          <Button size="small" @click="toggleEdit(todo.id)">
+            {{ editingStates.get(todo.id) ? '저장' : '수정' }}
+          </Button>
           <Button theme="dark" size="small">삭제</Button>
         </div>
       </template>
     </ListRow>
+
+    <Card v-else style="margin: 16px 0">
+      <template #header>
+        <Tab
+          :model-value="todo.priority as Priority"
+          @update:model-value="(value: string) => handlePriorityChange(value as Priority)"
+        >
+          <TabItem value="high">높음</TabItem>
+          <TabItem value="medium">보통</TabItem>
+          <TabItem value="low">낮음</TabItem>
+        </Tab>
+      </template>
+      <template #content>
+        <Input type="text" v-model="todo.title" placeholder="할 일을 입력하세요" />
+        <Textarea v-model="todo.description" placeholder="할 일 내용을 입력하세요" />
+        <Input type="date" v-model="todo.date" />
+      </template>
+      <template #footer>
+        <div style="display: flex; gap: 8px">
+          <Button>저장</Button>
+          <Button theme="dark" @click="toggleEdit(todo.id)">취소</Button>
+        </div>
+      </template>
+    </Card>
+
     <Border v-if="index !== todos.length - 1" />
   </div>
 </template>
