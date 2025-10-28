@@ -13,6 +13,7 @@ import TabItem from './components/TabItem.vue'
 import Card from './components/Card.vue'
 import Border from './components/Border.vue'
 import Input from './components/Input.vue'
+import Textarea from './components/Textarea.vue'
 
 const priority = ref('medium')
 
@@ -32,8 +33,9 @@ const handlePriorityChange = (value: string) => {
       </Tab>
     </template>
     <template #content>
-      <Input type="date" />
       <Input type="text" placeholder="할 일을 입력하세요" />
+      <Textarea placeholder="할 일 내용을 입력하세요" />
+      <Input type="date" />
     </template>
     <template #footer>
       <Button>등록</Button>
