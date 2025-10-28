@@ -45,6 +45,5 @@
 ## 외 고려할 공통 디테일
 
 - [ ] 입력 유효성 검사: 제목 필수, 글자 수 제한
-- [ ] 오류 처리 UX: alert 대신 inline 메시지 또는 toast
 - [ ] 접근성: 버튼 aria-label, 키보드 포커스 가능 여부
 - [ ] 저장소 연동: LocalStorage sync 로직

@@ -58,7 +58,7 @@ Vue(Composition API)를 기반으로 구현하며, LocalStorage를 활용해 데
   - 삭제 전 확인 모달 표시
   - 삭제 후 상태 및 LocalStorage 동기화
   - 목록이 비면 “할 일이 없습니다” 안내 표시
-  - 삭제 실패 시 toast 형태의 에러 메시지 표시
+  - 삭제 실패 시 alert 형태의 에러 메시지 표시
 - **사용 기술:** Vue 상태 관리, composable 모달 컴포넌트, LocalStorage 업데이트
 
 ---
