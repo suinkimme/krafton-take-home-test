@@ -97,6 +97,17 @@ const cancelEdit = (id: number) => {
   editingTodos.value.delete(id)
 }
 
+const deleteTodo = (id: number) => {
+  // todos 배열에서 해당 todo 제거
+  const index = todos.value.findIndex((t) => t.id === id)
+  if (index !== -1) {
+    todos.value.splice(index, 1)
+  }
+  // 편집 상태도 정리
+  editingStates.value.delete(id)
+  editingTodos.value.delete(id)
+}
+
 const priority = ref<Priority>('medium')
 
 const handlePriorityChange = (value: Priority) => {
@@ -129,7 +140,7 @@ const handlePriorityChange = (value: Priority) => {
 
   <Spacing :size="30" />
 
-  <div v-for="(todo, index) in todos" :key="index">
+  <div v-for="(todo, index) in todos" :key="index" v-if="todos.length > 0">
     <ListRow withPadding v-if="!editingStates.get(todo.id)">
       <template #contents>
         <Badge :status="getPriorityBadgeStatus(todo.priority as Priority)" size="small">{{
@@ -141,7 +152,7 @@ const handlePriorityChange = (value: Priority) => {
       <template #right>
         <div style="display: flex; gap: 3px">
           <Button size="small" @click="toggleEdit(todo.id)"> 수정 </Button>
-          <Button theme="dark" size="small">삭제</Button>
+          <Button theme="dark" size="small" @click="deleteTodo(todo.id)">삭제</Button>
         </div>
       </template>
     </ListRow>
@@ -212,5 +223,8 @@ const handlePriorityChange = (value: Priority) => {
     </Card>
 
     <Border v-if="index !== todos.length - 1" />
+  </div>
+  <div v-else>
+    <p>할 일이 없습니다.</p>
   </div>
 </template>
