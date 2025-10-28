@@ -1,9 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ListHeader from './components/ListHeader.vue'
+</script>
 
 <template>
-  <div>
-    <h1>Home</h1>
-  </div>
+  <ListHeader title="할 일 목록" />
 </template>
 
 <style scoped></style>
