@@ -4,6 +4,7 @@ import ListRow from './components/ListRow.vue'
 import ListRowTexts from './components/ListRowTexts.vue'
 import Button from './components/Button.vue'
 import Badge from './components/Badge.vue'
+import Spacing from './components/Spacing.vue'
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import Badge from './components/Badge.vue'
   <ListRow withPadding>
     <template #contents>
       <Badge status="warning" size="small">높음</Badge>
+      <Spacing :size="10" />
       <ListRowTexts
         top="할 일 1"
         middle="할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용할 일 1 내용"
