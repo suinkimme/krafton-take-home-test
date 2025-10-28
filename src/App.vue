@@ -11,6 +11,7 @@ import Spacing from './components/Spacing.vue'
 import Tab from './components/Tab.vue'
 import TabItem from './components/TabItem.vue'
 import Card from './components/Card.vue'
+import Border from './components/Border.vue'
 
 const priority = ref('medium')
 
@@ -37,6 +38,9 @@ const handlePriorityChange = (value: string) => {
       <Button>등록</Button>
     </template>
   </Card>
+
+  <Spacing :size="30" />
+
   <ListRow withPadding>
     <template #contents>
       <Badge status="warning" size="small">높음</Badge>
@@ -54,6 +58,7 @@ const handlePriorityChange = (value: string) => {
       </div>
     </template>
   </ListRow>
+  <Border />
 </template>
 
 <style scoped></style>
