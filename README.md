@@ -1,54 +1,42 @@
-# krafton-take-home-test
+# TODO LIST 만들기
 
-This template should help get you started developing with Vue 3 in Vite.
+## 진행 상황
 
-## Recommended IDE Setup
+- [x] TODO 등록
+  - [x] 제목 필수 입력 (공백만 입력 시 등록 불가)
+  - [x] 중복된 제목 등록 시 허용
+  - [x] 마감일·우선순위 기본값 설정 (예: 기본은 오늘 날짜 없음 / 우선순위 ‘보통’)
+  - [x] 등록 후 입력 필드 초기화 및 포커스 이동 처리
+  - [x] 등록 시점에 LocalStorage 또는 상태 저장
+- [x] TODO 목록 조회
+  - [x] 완료 항목과 미완료 항목 시각적으로 구분 (예: 취소선, 회색 처리)
+  - [x] 마감일 임박 항목 시 강조 표시 (예: D-day 배지)
+  - [x] 필터/정렬 옵션 제공 (예: 우선순위순, 마감일순, 완료여부별)
+  - [x] 데이터 저장소(LocalStorage)에서 불러올 때 null/undefined 처리 방지
+- [x] TODO 수정
+  - [x] 제목 또는 내용 수정 가능
+  - [x] 수정 모드 진입 시 기존 내용 표시 (input 또는 textarea)
+  - [x] 제목 공백 검증 (등록과 동일)
+  - [x] 수정 중 취소 시 원래 상태 복원
+- [x] TODO 삭제
+  - [x] 삭제 후 상태/저장소 동기화
+  - [x] 빈 목록일 경우 “할 일이 없습니다” 안내 표시
+- [x] 마감 기한 설정
+  - [x] 마감일은 오늘보다 이전 날짜 선택 불가
+  - [x] 날짜 입력 시 포맷 검증 (YYYY-MM-DD)
+  - [x] 마감일 지난 TODO는 자동 “지연 상태” 표시 가능
+- [x] 우선 순위 설정
+  - [x] 기본값: “보통”
+  - [x] 선택 가능한 등급 정의 (예: 높음 / 보통 / 낮음)
+  - [x] 시각적으로 우선순위 구분 (예: 색상, 아이콘)
+  - [x] 목록 정렬 시 우선순위 반영 가능
+- [x] 완료 처리
+  - [x] 완료 버튼 클릭 시 상태 토글 (완료 ↔ 미완료)
+  - [x] 완료 항목은 시각적으로 구분 (취소선, 회색 처리)
+  - [x] 완료 상태 변경 시 LocalStorage 동기화
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 외 고려할 공통 디테일
 
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-pnpm test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+- [x] 입력 유효성 검사: 제목 필수, 글자 수 제한
+- [x] 접근성: 버튼 aria-label, 키보드 포커스 가능 여부
+- [x] 저장소 연동: LocalStorage sync 로직

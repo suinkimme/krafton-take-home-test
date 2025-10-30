@@ -33,6 +33,37 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  /* Badge color variables */
+  --badge-success-bg: #10b981;
+  --badge-success-bg-soft: #d1fae5;
+  --badge-success-color: #ffffff;
+  --badge-success-color-soft: #065f46;
+  --badge-success-border: #10b981;
+
+  --badge-warning-bg: #f59e0b;
+  --badge-warning-bg-soft: #fef3c7;
+  --badge-warning-color: #ffffff;
+  --badge-warning-color-soft: #92400e;
+  --badge-warning-border: #f59e0b;
+
+  --badge-error-bg: #ef4444;
+  --badge-error-bg-soft: #fee2e2;
+  --badge-error-color: #ffffff;
+  --badge-error-color-soft: #991b1b;
+  --badge-error-border: #ef4444;
+
+  --badge-info-bg: #3b82f6;
+  --badge-info-bg-soft: #dbeafe;
+  --badge-info-color: #ffffff;
+  --badge-info-color-soft: #1e40af;
+  --badge-info-border: #3b82f6;
+
+  --badge-neutral-bg: #6b7280;
+  --badge-neutral-bg-soft: #f3f4f6;
+  --badge-neutral-color: #ffffff;
+  --badge-neutral-color-soft: #374151;
+  --badge-neutral-border: #6b7280;
+
   --section-gap: 160px;
 }
 
@@ -47,6 +78,32 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+
+    /* Badge color variables for dark mode */
+    --badge-success-bg: #059669;
+    --badge-success-bg-soft: #064e3b;
+    --badge-success-color: #ffffff;
+    --badge-success-color-soft: #a7f3d0;
+
+    --badge-warning-bg: #d97706;
+    --badge-warning-bg-soft: #451a03;
+    --badge-warning-color: #ffffff;
+    --badge-warning-color-soft: #fde68a;
+
+    --badge-error-bg: #dc2626;
+    --badge-error-bg-soft: #450a0a;
+    --badge-error-color: #ffffff;
+    --badge-error-color-soft: #fecaca;
+
+    --badge-info-bg: #2563eb;
+    --badge-info-bg-soft: #1e3a8a;
+    --badge-info-color: #ffffff;
+    --badge-info-color-soft: #bfdbfe;
+
+    --badge-neutral-bg: #4b5563;
+    --badge-neutral-bg-soft: #1f2937;
+    --badge-neutral-color: #ffffff;
+    --badge-neutral-color-soft: #d1d5db;
   }
 }
 
