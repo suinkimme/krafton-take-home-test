@@ -118,26 +118,28 @@ const toggleCompleteTodo = (id: string) => {
 
 <template>
   <ListHeader title="할 일 목록" />
-  <Card>
-    <template #header>
-      <Tab
-        :model-value="newTodo.priority"
-        @update:model-value="(value: string) => (newTodo.priority = value as Priority)"
-      >
-        <TabItem value="high">높음</TabItem>
-        <TabItem value="medium">보통</TabItem>
-        <TabItem value="low">낮음</TabItem>
-      </Tab>
-    </template>
-    <template #content>
-      <Input type="text" v-model="newTodo.title" placeholder="할 일을 입력하세요" />
-      <Textarea v-model="newTodo.description" placeholder="할 일 내용을 입력하세요" />
-      <Input type="date" v-model="newTodo.date" />
-    </template>
-    <template #footer>
-      <Button aria-label="새 할 일 등록" @click="addTodo(newTodo)">등록</Button>
-    </template>
-  </Card>
+  <div style="padding: 0 16px">
+    <Card>
+      <template #header>
+        <Tab
+          :model-value="newTodo.priority"
+          @update:model-value="(value: string) => (newTodo.priority = value as Priority)"
+        >
+          <TabItem value="high">높음</TabItem>
+          <TabItem value="medium">보통</TabItem>
+          <TabItem value="low">낮음</TabItem>
+        </Tab>
+      </template>
+      <template #content>
+        <Input type="text" v-model="newTodo.title" placeholder="할 일을 입력하세요" />
+        <Textarea v-model="newTodo.description" placeholder="할 일 내용을 입력하세요" />
+        <Input type="date" v-model="newTodo.date" />
+      </template>
+      <template #footer>
+        <Button aria-label="새 할 일 등록" @click="addTodo(newTodo)">등록</Button>
+      </template>
+    </Card>
+  </div>
 
   <Spacing :size="30" />
 
