@@ -8,6 +8,7 @@ interface ButtonProps {
   styleType?: StyleType
   size?: Size
   fullWidth?: boolean
+  ariaLabel?: string
 }
 
 const props = withDefaults(defineProps<ButtonProps>(), {
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   styleType: 'fill',
   size: 'medium',
   fullWidth: false,
+  ariaLabel: '',
 })
 </script>
 
@@ -27,6 +29,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
       `btn--size-${props.size}`,
       { 'btn--full-width': props.fullWidth },
     ]"
+    :aria-label="props.ariaLabel || undefined"
     v-bind="$attrs"
   >
     <slot />
@@ -41,6 +44,15 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--vt-c-indigo);
+  outline-offset: 2px;
+}
+
+.btn:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* 크기별 스타일 */

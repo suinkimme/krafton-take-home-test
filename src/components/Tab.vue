@@ -23,7 +23,7 @@ provide('tabContext', {
 </script>
 
 <template>
-  <div class="tab">
+  <div class="tab" role="tablist" aria-label="우선순위 선택">
     <slot />
   </div>
 </template>

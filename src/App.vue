@@ -135,7 +135,7 @@ const toggleCompleteTodo = (id: string) => {
       <Input type="date" v-model="newTodo.date" />
     </template>
     <template #footer>
-      <Button @click="addTodo(newTodo)">등록</Button>
+      <Button aria-label="새 할 일 등록" @click="addTodo(newTodo)">등록</Button>
     </template>
   </Card>
 
@@ -150,6 +150,7 @@ const toggleCompleteTodo = (id: string) => {
           textDecoration: todo.completed ? 'line-through' : 'none',
           opacity: todo.completed ? 0.6 : 1,
         }"
+        :aria-label="`${todo.completed ? '완료된' : ''} 할 일: ${todo.title}`"
         @click="toggleCompleteTodo(todo.id)"
       >
         <template #contents>
@@ -161,8 +162,16 @@ const toggleCompleteTodo = (id: string) => {
         </template>
         <template #right>
           <div style="display: flex; gap: 3px">
-            <Button size="small" @click="toggleEdit(todo.id)"> 수정 </Button>
-            <Button theme="dark" size="small" @click="deleteTodo(todo.id)">삭제</Button>
+            <Button size="small" aria-label="할 일 수정" @click.stop="toggleEdit(todo.id)">
+              수정
+            </Button>
+            <Button
+              theme="dark"
+              size="small"
+              aria-label="할 일 삭제"
+              @click.stop="deleteTodo(todo.id)"
+              >삭제</Button
+            >
           </div>
         </template>
       </ListRow>
@@ -226,8 +235,8 @@ const toggleCompleteTodo = (id: string) => {
         </template>
         <template #footer>
           <div style="display: flex; gap: 8px">
-            <Button @click="saveTodo(todo.id)">저장</Button>
-            <Button theme="dark" @click="cancelEdit(todo.id)">취소</Button>
+            <Button aria-label="수정 내용 저장" @click="saveTodo(todo.id)">저장</Button>
+            <Button theme="dark" aria-label="수정 취소" @click="cancelEdit(todo.id)">취소</Button>
           </div>
         </template>
       </Card>
