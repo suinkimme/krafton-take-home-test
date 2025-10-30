@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getPriorityLabel, getPriorityBadgeStatus, type Priority } from './lib/Todo'
+import { useTodos } from './composables/useTodos'
+import type { TodoItem } from './lib/TodoStorage'
 
 // components
 import ListHeader from './components/ListHeader.vue'
@@ -16,158 +18,28 @@ import Border from './components/Border.vue'
 import Input from './components/Input.vue'
 import Textarea from './components/Textarea.vue'
 
-const todos = ref([
-  {
-    id: 1,
-    title: '할 일 1',
-    description: '할 일 1 내용',
-    date: '2025-10-28',
-    priority: 'high',
-    completed: false,
-  },
-  {
-    id: 2,
-    title: '할 일 2',
-    description: '할 일 2 내용',
-    date: '2025-10-29',
-    priority: 'medium',
-    completed: false,
-  },
-  {
-    id: 3,
-    title: '할 일 3',
-    description: '할 일 3 내용',
-    date: '2025-10-30',
-    priority: 'low',
-    completed: false,
-  },
-  {
-    id: 4,
-    title: '할 일 4',
-    description: '할 일 4 내용',
-    date: '2025-10-31',
-    priority: 'high',
-    completed: false,
-  },
-  {
-    id: 5,
-    title: '할 일 5',
-    description: '할 일 5 내용',
-    date: '2025-11-01',
-    priority: 'medium',
-    completed: false,
-  },
-  {
-    id: 6,
-    title: '할 일 6',
-    description: '할 일 6 내용',
-    date: '2025-11-02',
-    priority: 'low',
-    completed: false,
-  },
-  {
-    id: 7,
-    title: '할 일 7',
-    description: '할 일 7 내용',
-    date: '2025-11-03',
-    priority: 'high',
-    completed: false,
-  },
-  {
-    id: 8,
-    title: '할 일 8',
-    description: '할 일 8 내용',
-    date: '2025-11-04',
-    priority: 'medium',
-    completed: false,
-  },
-  {
-    id: 9,
-    title: '할 일 9',
-    description: '할 일 9 내용',
-    date: '2025-11-05',
-    priority: 'low',
-    completed: false,
-  },
-  {
-    id: 10,
-    title: '할 일 10',
-    description: '할 일 10 내용',
-    date: '2025-11-06',
-    priority: 'high',
-    completed: false,
-  },
-  {
-    id: 11,
-    title: '할 일 11',
-    description: '할 일 11 내용',
-    date: '2025-11-07',
-    priority: 'medium',
-    completed: false,
-  },
-  {
-    id: 12,
-    title: '할 일 12',
-    description: '할 일 12 내용',
-    date: '2025-11-08',
-    priority: 'low',
-    completed: false,
-  },
-  {
-    id: 13,
-    title: '할 일 13',
-    description: '할 일 13 내용',
-    date: '2025-11-09',
-    priority: 'high',
-    completed: false,
-  },
-  {
-    id: 14,
-    title: '할 일 14',
-    description: '할 일 14 내용',
-    date: '2025-11-10',
-    priority: 'medium',
-    completed: false,
-  },
-  {
-    id: 15,
-    title: '할 일 15',
-    description: '할 일 15 내용',
-    date: '2025-11-11',
-    priority: 'low',
-    completed: false,
-  },
-  {
-    id: 16,
-    title: '할 일 16',
-    description: '할 일 16 내용',
-    date: '2025-11-12',
-    priority: 'high',
-    completed: false,
-  },
-  {
-    id: 17,
-    title: '할 일 17',
-    description: '할 일 17 내용',
-    date: '2025-11-13',
-    priority: 'medium',
-    completed: false,
-  },
-])
+// localStorage와 연동되는 todos 관리
+const {
+  todos,
+  addTodo: addTodoToStorage,
+  updateTodo,
+  deleteTodo: deleteTodoFromStorage,
+  toggleComplete,
+} = useTodos()
 
-const editingStates = ref(new Map<number, boolean>())
+const editingStates = ref(new Map<string, boolean>())
 const editingTodos = ref(
   new Map<
-    number,
-    { id: number; title: string; description: string; date: string; priority: Priority }
+    string,
+    { id: string; title: string; description: string; date: string; priority: Priority }
   >(),
 )
 
-const toggleEdit = (id: number) => {
+const toggleEdit = (id: string) => {
   const currentState = editingStates.value.get(id) || false
   if (!currentState) {
     // 편집 모드 시작 - 현재 todo 데이터를 임시 저장
-    const todo = todos.value.find((t) => t.id === id)
+    const todo = todos.value.find((t: TodoItem) => t.id === id)
     if (todo) {
       editingTodos.value.set(id, { ...todo, priority: todo.priority as Priority })
     }
@@ -178,32 +50,32 @@ const toggleEdit = (id: number) => {
   editingStates.value.set(id, !currentState)
 }
 
-const saveTodo = (id: number) => {
+const saveTodo = (id: string) => {
   const editingTodo = editingTodos.value.get(id)
   if (editingTodo) {
-    // todos 배열에서 해당 todo 찾아서 업데이트
-    const index = todos.value.findIndex((t) => t.id === id)
-    if (index !== -1) {
-      todos.value[index] = { ...editingTodo }
-    }
+    // localStorage를 통해 todo 업데이트
+    updateTodo(id, {
+      title: editingTodo.title,
+      description: editingTodo.description,
+      date: editingTodo.date,
+      priority: editingTodo.priority,
+    })
     // 편집 모드 종료
     editingStates.value.set(id, false)
     editingTodos.value.delete(id)
   }
 }
 
-const cancelEdit = (id: number) => {
+const cancelEdit = (id: string) => {
   // 편집 모드 종료 (변경사항 저장하지 않음)
   editingStates.value.set(id, false)
   editingTodos.value.delete(id)
 }
 
-const deleteTodo = (id: number) => {
-  // todos 배열에서 해당 todo 제거
-  const index = todos.value.findIndex((t) => t.id === id)
-  if (index !== -1) {
-    todos.value.splice(index, 1)
-  }
+const deleteTodo = (id: string) => {
+  // localStorage를 통해 todo 삭제
+  deleteTodoFromStorage(id)
+
   // 편집 상태도 정리
   editingStates.value.delete(id)
   editingTodos.value.delete(id)
@@ -217,16 +89,15 @@ const newTodo = ref({
   priority: 'medium' as Priority,
 })
 
-// 새 todo 등록 함수
-const addTodo = () => {
-  if (newTodo.value.title.trim() && newTodo.value.description.trim() && newTodo.value.date) {
-    const id = Math.max(...todos.value.map((t) => t.id), 0) + 1
-    todos.value.push({
-      id,
-      title: newTodo.value.title.trim(),
-      description: newTodo.value.description.trim(),
-      date: newTodo.value.date,
-      priority: newTodo.value.priority,
+// 새 todo 등록 함수 (명시적 인자)
+const addTodo = (todo: Omit<TodoItem, 'id' | 'completed'>) => {
+  if (todo.title.trim() && todo.description.trim() && todo.date) {
+    // localStorage를 통해 새 todo 추가
+    addTodoToStorage({
+      title: todo.title.trim(),
+      description: todo.description.trim(),
+      date: todo.date,
+      priority: todo.priority,
     })
 
     // 폼 초기화
@@ -239,11 +110,9 @@ const addTodo = () => {
   }
 }
 
-const toggleComplete = (id: number) => {
-  const todo = todos.value.find((t) => t.id === id)
-  if (todo) {
-    todo.completed = !todo.completed
-  }
+const toggleCompleteTodo = (id: string) => {
+  // localStorage를 통해 완료 상태 토글
+  toggleComplete(id)
 }
 </script>
 
@@ -266,14 +135,14 @@ const toggleComplete = (id: number) => {
       <Input type="date" v-model="newTodo.date" />
     </template>
     <template #footer>
-      <Button @click="addTodo">등록</Button>
+      <Button @click="addTodo(newTodo)">등록</Button>
     </template>
   </Card>
 
   <Spacing :size="30" />
 
   <div v-if="todos.length > 0">
-    <div v-for="(todo, index) in todos" :key="index">
+    <div v-for="(todo, index) in todos" :key="todo.id">
       <ListRow
         withPadding
         v-if="!editingStates.get(todo.id)"
@@ -281,7 +150,7 @@ const toggleComplete = (id: number) => {
           textDecoration: todo.completed ? 'line-through' : 'none',
           opacity: todo.completed ? 0.6 : 1,
         }"
-        @click="toggleComplete(todo.id)"
+        @click="toggleCompleteTodo(todo.id)"
       >
         <template #contents>
           <Badge :status="getPriorityBadgeStatus(todo.priority as Priority)" size="small">{{
