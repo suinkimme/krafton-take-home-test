@@ -91,7 +91,7 @@ const newTodo = ref({
 
 // 새 todo 등록 함수 (명시적 인자)
 const addTodo = (todo: Omit<TodoItem, 'id' | 'completed'>) => {
-  if (todo.title.trim() && todo.description.trim() && todo.date) {
+  if (todo.title.trim() && todo.description.trim()) {
     // localStorage를 통해 새 todo 추가
     addTodoToStorage({
       title: todo.title.trim(),
